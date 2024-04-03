@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: demo-statefulset  # Replace with a descriptive name
+spec:
+  replicas: 1  # Number of Pods in the StatefulSet (adjust as needed)
+  selector:
+    matchLabels:
+      app: demo-db  # Replace with your application label
+  template:
+    metadata:
+      labels:
+        app: demo-db  # Match the selector label
+    spec:
+      containers:
+      - name: psql-container  # Replace with your container name
+        image: tejaskawde/postgres:latest  # Replace with your image
+        ports:
+        - containerPort: 5432  # Adjust port if needed
+        env:
+        - name: POSTGRES_USER
+          value: tejas
+        - name: POSTGRES_PASSWORD
+          value: pass
+
+        - name: POSTGRES_DATABASE
+          value: mydb
+
+        volumeMounts:
+          - name: postgres-data
+            mountPath: /var/lib/postgresql
+      volumes:
+      - name: postgres-data
+        hostPath:
+          path: /data  # Path created on Minikube VM
+          type: DirectoryOrCreate
