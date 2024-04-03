@@ -3,7 +3,6 @@ kind: Service
 metadata:
   name: gogs
 spec:
-  type: ClusterIP
   selector:
     app: gogs
   ports:
