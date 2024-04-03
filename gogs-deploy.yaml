@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gogs
+
+spec:
+  replicas: 1  # Adjust as needed (e.g., for high availability)
+  selector:
+    matchLabels:
+      app: gogs
+  template:
+    metadata:
+      labels:
+        app: gogs
+    spec:
+      containers:
+      - name: gogs
+        image: gogs/gogs:latest  # Update with desired Gogs version
+        ports:
+        - containerPort: 3000
+
+        volumeMounts:
+        - name: gogs-persistent-storage
+          mountPath: /data
+      volumes:
+      - name: gogs-persistent-storage
+        persistentVolumeClaim:
+          claimName: demo-pvc
